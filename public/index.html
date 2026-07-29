@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok BOOSTER 🚀 — Décolle sur TikTok</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0F;
+    --surface: #15151F;
+    --surface-2: #1D1D2A;
+    --cyan: #25F4EE;
+    --pink: #FE2C55;
+    --text: #F5F5F7;
+    --muted: #8B8B96;
+    --success: #3ECF8E;
+    --error: #FF6B6B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  h1, h2, .display {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ---------- Halo de fond ---------- */
+  .halo {
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140%;
+    height: 60vh;
+    background: radial-gradient(ellipse at center, rgba(37,244,238,0.10), rgba(254,44,85,0.08) 45%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    position: relative;
+    z-index: 1;
+    padding: 28px 20px 8px;
+    text-align: center;
+  }
+  .logo {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .logo span { color: var(--text); }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding: 20px 20px 32px;
+    text-align: center;
+  }
+  .rocket-emoji {
+    font-size: 52px;
+    display: inline-block;
+    animation: float 3.2s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-10px) rotate(3deg); }
+  }
+  .hero h1 {
+    font-size: clamp(28px, 7vw, 40px);
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 14px 0 10px;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(90deg, var(--cyan), var(--pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  /* ---------- Étapes ---------- */
+  .step-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 28px 0 12px 4px;
+  }
+
+  /* ---------- Cartes services ---------- */
+  .services {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .service-card {
+    background: var(--surface);
+    border: 1.5px solid transparent;
+    border-radius: 16px;
+    padding: 16px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.1s;
+  }
+  .service-card:active { transform: scale(0.97); }
+  .service-card.selected {
+    border-color: var(--cyan);
+    background: linear-gradient(180deg, rgba(37,244,238,0.08), var(--surface));
+  }
+  .service-card .icon { font-size: 26px; display: block; margin-bottom: 6px; }
+  .service-card .name { font-size: 13px; font-weight: 600; }
+  .service-card .price-from { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ---------- Console de lancement (quantité + prix) ---------- */
+  .console {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .console.disabled { opacity: 0.4; pointer-events: none; }
+
+  .field-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+  input[type="number"], input[type="text"], input[type="email"] {
+    width: 100%;
+    background: var(--surface-2);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--text);
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  input:focus { border-color: var(--cyan); }
+  input::placeholder { color: #55555f; }
+
+  .price-readout {
+    margin-top: 16px;
+    background: #0D0D14;
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(37,244,238,0.15);
+  }
+  .price-readout .label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .price-readout .value {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--cyan);
+  }
+  .price-readout .tier-note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .field-group { margin-top: 16px; }
+
+  .verify-msg {
+    font-size: 13px;
+    margin-top: 8px;
+    display: none;
+  }
+  .verify-msg.show { display: block; }
+  .verify-msg.ok { color: var(--success); }
+  .verify-msg.error { color: var(--error); }
+  .verify-msg.loading { color: var(--muted); }
+
+  .cta-btn {
+    width: 100%;
+    margin-top: 20px;
+    background: linear-gradient(90deg, var(--cyan), var(--pink));
+    color: #0A0A0F;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .cta-btn:active { transform: scale(0.98); }
+  .cta-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .trust-row {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 28px;
+    color: var(--muted);
+    font-size: 12px;
+    flex-wrap: wrap;
+  }
+  .trust-row span { display: flex; align-items: center; gap: 5px; }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: #4a4a55;
+    font-size: 12px;
+  }
+
+  /* ---------- Popup ---------- */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,5,8,0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+    padding: 20px;
+  }
+  .overlay.show { opacity: 1; pointer-events: all; }
+  .popup {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 28px 24px 24px;
+    max-width: 340px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.08);
+    transform: translateY(10px) scale(0.97);
+    transition: transform 0.25s;
+  }
+  .overlay.show .popup { transform: translateY(0) scale(1); }
+  .popup-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .popup .icon { font-size: 34px; margin-bottom: 10px; }
+  .popup h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 19px;
+    margin-bottom: 8px;
+  }
+  .popup p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .popup-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  .popup-buttons button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-yes {
+    background: linear-gradient(90deg, var(--cyan), var(--pink));
+    color: #0A0A0F;
+  }
+  .btn-no {
+    background: var(--surface-2);
+    color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rocket-emoji { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="halo"></div>
+
+<header>
+  <div class="logo">TikTok <span>BOOSTER</span> 🚀🛒</div>
+</header>
+
+<section class="hero">
+  <div class="rocket-emoji">🚀</div>
+  <h1>Fais <span class="accent">décoller</span><br>ton compte TikTok</h1>
+  <p>Abonnés, likes et vues livrés automatiquement, en quelques minutes.</p>
+</section>
+
+<main>
+
+  <div class="step-label">1. Choisis ton boost</div>
+  <div class="services" id="services">
+    <div class="service-card" data-service="abonnes">
+      <span class="icon">👥</span>
+      <span class="name">Abonnés</span>
+      <span class="price-from">dès 1 225 F</span>
+    </div>
+    <div class="service-card" data-service="likes">
+      <span class="icon">❤️</span>
+      <span class="name">Likes</span>
+      <span class="price-from">dès 577 F</span>
+    </div>
+  </div>
+
+  <div class="step-label">2. Combien en veux-tu ?</div>
+  <div class="console disabled" id="console">
+    <label class="field-label">Quantité souhaitée</label>
+    <input type="number" id="quantity" placeholder="Ex : 1000" min="1">
+
+    <div class="price-readout">
+      <div>
+        <div class="label">Prix estimé</div>
+        <div class="tier-note" id="tierNote">Choisis un service</div>
+      </div>
+      <div class="value mono" id="priceValue">--$</div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Lien ou nom d'utilisateur TikTok</label>
+      <input type="text" id="tiktokInput" placeholder="@tonpseudo ou lien de la vidéo">
+      <div class="verify-msg" id="verifyMsg"></div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Ton email (pour la confirmation)</label>
+      <input type="email" id="email" placeholder="toi@email.com">
+    </div>
+
+    <button class="cta-btn" id="ctaBtn" disabled>Commander maintenant</button>
+  </div>
+
+  <div class="trust-row">
+    <span>⚡ Livraison automatique</span>
+    <span>🔒 Paiement sécurisé</span>
+    <span>🇨🇮 Mobile Money accepté</span>
+  </div>
+
+</main>
+
+<footer>
+  © 2026 TikTok BOOSTER — Service indépendant, non affilié à TikTok Inc.
+</footer>
+
+<!-- ================= POPUP ================= -->
+<div class="overlay" id="overlay">
+  <div class="popup">
+    <button class="popup-close" id="popupClose">✕</button>
+    <div class="icon">💰</div>
+    <h3>Veux-tu créer un compte monétisé ?</h3>
+    <p>On t'accompagne pour mettre en place un compte TikTok prêt à générer des revenus.</p>
+    <div class="popup-buttons">
+      <button class="btn-no" id="popupNo">Non</button>
+      <button class="btn-yes" id="popupYes">Oui</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // CONFIGURATION DES SERVICES (doit rester synchronisée avec lib/services.js)
+  // ============================================================
+  const SERVICES = {
+    abonnes: {
+      label: "Abonnés",
+      tiers: [
+        { quantity: 500, price_fcfa: 1225, chariow_product_id: "prd_joc6fttz" },
+        { quantity: 1000, price_fcfa: 2450, chariow_product_id: "prd_fkd4s3w0" },
+        { quantity: 5000, price_fcfa: 12230, chariow_product_id: "prd_paz5fxau" }
+      ]
+    },
+    likes: {
+      label: "Likes",
+      tiers: [
+        { quantity: 1000, price_fcfa: 577, chariow_product_id: "prd_mejkd1qd" },
+        { quantity: 5000, price_fcfa: 2375, chariow_product_id: "prd_lpud3u5g" }
+      ]
+    }
+  };
+
+  let selectedService = null;
+  let selectedTier = null;
+  let linkVerified = false;
+
+  // ---------- Sélection du service ----------
+  document.querySelectorAll(".service-card").forEach(card => {
+    card.addEventListener("click", () => {
+      document.querySelectorAll(".service-card").forEach(c => c.classList.remove("selected"));
+      card.classList.add("selected");
+      selectedService = card.dataset.service;
+      document.getElementById("console").classList.remove("disabled");
+      document.getElementById("quantity").value = "";
+      updatePrice();
+    });
+  });
+
+  // ---------- Calcul du prix en direct ----------
+  function updatePrice() {
+    const qtyInput = document.getElementById("quantity");
+    const priceValue = document.getElementById("priceValue");
+    const tierNote = document.getElementById("tierNote");
+    const ctaBtn = document.getElementById("ctaBtn");
+
+    if (!selectedService) return;
+    const service = SERVICES[selectedService];
+    const quantity = parseInt(qtyInput.value, 10);
+
+    if (!quantity || quantity <= 0) {
+      priceValue.textContent = "-- F";
+      tierNote.textContent = "Entre une quantité";
+      selectedTier = null;
+      checkFormReady();
+      return;
+    }
+
+    // Estimation basée sur le ratio du plus petit palier (juste informatif)
+    const smallest = [...service.tiers].sort((a, b) => a.quantity - b.quantity)[0];
+    const ratio = smallest.price_fcfa / smallest.quantity;
+    const estimated = Math.round(ratio * quantity);
+    priceValue.textContent = estimated.toLocaleString('fr-FR') + " F";
+
+    // Palier le plus proche (facturation réelle)
+    const sorted = [...service.tiers].sort((a, b) => a.quantity - b.quantity);
+    selectedTier = sorted.find(t => t.quantity >= quantity) || sorted[sorted.length - 1];
+    tierNote.textContent = `Facturé sur le palier ${selectedTier.quantity.toLocaleString('fr-FR')} → ${selectedTier.price_fcfa.toLocaleString('fr-FR')} F`;
+
+    checkFormReady();
+  }
+  document.getElementById("quantity").addEventListener("input", updatePrice);
+
+  // ---------- Vérification du lien TikTok via Grok ----------
+  let verifyTimeout;
+  document.getElementById("tiktokInput").addEventListener("input", (e) => {
+    const msg = document.getElementById("verifyMsg");
+    linkVerified = false;
+    checkFormReady();
+    clearTimeout(verifyTimeout);
+
+    const value = e.target.value.trim();
+    if (value.length < 2) {
+      msg.className = "verify-msg";
+      return;
+    }
+
+    msg.className = "verify-msg show loading";
+    msg.textContent = "Vérification...";
+
+    verifyTimeout = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/verify-link", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ input: value })
+        });
+        const data = await res.json();
+        if (data.valide) {
+          msg.className = "verify-msg show ok";
+          msg.textContent = "✓ Lien reconnu";
+          linkVerified = true;
+        } else {
+          msg.className = "verify-msg show error";
+          msg.textContent = "✕ " + (data.raison || "Format non reconnu, vérifie ton lien");
+          linkVerified = false;
+        }
+      } catch {
+        // En cas de panne, on ne bloque pas le client
+        msg.className = "verify-msg show ok";
+        msg.textContent = "✓ Reçu";
+        linkVerified = true;
+      }
+      checkFormReady();
+    }, 600);
+  });
+
+  document.getElementById("email").addEventListener("input", checkFormReady);
+
+  function checkFormReady() {
+    const email = document.getElementById("email").value.trim();
+    const ctaBtn = document.getElementById("ctaBtn");
+    const ready = selectedService && selectedTier && linkVerified && email.includes("@");
+    ctaBtn.disabled = !ready;
+  }
+
+  // ---------- Commande ----------
+  document.getElementById("ctaBtn").addEventListener("click", async () => {
+    const ctaBtn = document.getElementById("ctaBtn");
+    ctaBtn.disabled = true;
+    ctaBtn.textContent = "Redirection...";
+
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          service_key: selectedService,
+          chariow_product_id: selectedTier.chariow_product_id,
+          quantity: selectedTier.quantity,
+          tiktok_input: document.getElementById("tiktokInput").value.trim(),
+          email: document.getElementById("email").value.trim()
+        })
+      });
+      const data = await res.json();
+
+      if (data.checkout_url) {
+        window.location.href = data.checkout_url;
+      } else {
+        alert(data.error || "Une erreur est survenue, réessaie.");
+        ctaBtn.disabled = false;
+        ctaBtn.textContent = "Commander maintenant";
+      }
+    } catch {
+      alert("Erreur réseau, réessaie dans un instant.");
+      ctaBtn.disabled = false;
+      ctaBtn.textContent = "Commander maintenant";
+    }
+  });
+
+  // ---------- Popup ----------
+  const overlay = document.getElementById("overlay");
+  setTimeout(() => overlay.classList.add("show"), 1500);
+
+  function closePopup() { overlay.classList.remove("show"); }
+  document.getElementById("popupClose").addEventListener("click", closePopup);
+  document.getElementById("popupNo").addEventListener("click", closePopup);
+  document.getElementById("popupYes").addEventListener("click", () => {
+    const message = encodeURIComponent("salut je veux un compte monétisé TikTok comment on procède");
+    window.location.href = `https://wa.me/2250586152214?text=${message}`;
+  });
+</script>
+
+</body>
+</html>
