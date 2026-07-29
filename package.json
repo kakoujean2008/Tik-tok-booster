@@ -1,0 +1,9 @@
+{
+  "name": "tiktok-booster",
+  "version": "1.0.0",
+  "description": "Site de vente automatisée de services TikTok (abonnés, likes, vues)",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
